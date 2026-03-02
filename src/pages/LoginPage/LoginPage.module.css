@@ -1,0 +1,76 @@
+.loginWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: Arial, sans-serif;
+}
+
+.authContainer {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+}
+
+.authContainer h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.authForm input {
+  padding: 1rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.authForm input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.authForm button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.authForm button:hover {
+  background: #5a6fd8;
+  transform: translateY(-2px);
+}
+
+.switchAuth {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #666;
+}
+
+.switchAuth a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.switchAuth a:hover {
+  text-decoration: underline;
+}
