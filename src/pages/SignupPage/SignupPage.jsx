@@ -10,7 +10,7 @@ function SignupPage() {
     password: "",
     confirmPassword: ""
   });
-  console.log('formData', formData)
+  
 
  const handleChange = (e) => {
    setFormData({
@@ -21,7 +21,7 @@ function SignupPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('formData', formData)
+    
     if(formData.password !== formData.confirmPassword){
       alert('passwords do not match')
       return

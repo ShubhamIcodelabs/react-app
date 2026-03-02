@@ -47,13 +47,13 @@ const LoginPage = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(form);
+        
 
         const validationErrors = validation()
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length===0){
-            console.log("form submited", form);
+            
             localStorage.setItem('isAuthenticated', 'true');
             localStorage.setItem('currentUser', JSON.stringify({
                 name: form.email.split('@')[0],
