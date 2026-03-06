@@ -34,7 +34,12 @@
   border: 2px solid #e1e1e1;
   border-radius: 8px;
   font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
   transition: border-color 0.3s ease;
+}
+.formGroup{
+  width: 100%;
 }
 
 .authForm input:focus {
@@ -42,21 +47,30 @@
   border-color: #667eea;
 }
 
-.authForm button {
-  background: #667eea;
-  color: white;
-  border: none;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.authForm button:hover {
-  background: #5a6fd8;
-  transform: translateY(-2px);
+.authForm  {
+  & button{
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    &:hover{
+      background: #5a6fd8;
+      transform: translateY(-2px);
+    }
+    &:disabled{
+      opacity: 0.5;
+      background: #888a90;
+      cursor: not-allowed;
+      &:hover{
+        background: #888a90;
+      }
+    }
+  }  
 }
 
 .switchAuth {
@@ -73,4 +87,22 @@
 
 .switchAuth a:hover {
   text-decoration: underline;
+}
+
+.alert {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.error {
+  background-color: #952525;
+  color: #d8000c;
+}
+
+.success {
+  background-color: #e6ffed;
+  color: #2e7d32;
 }

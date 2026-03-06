@@ -1,5 +1,5 @@
 import './App.css';
-import HomePage from './pages/HomePage/homepage.jsx';
+import HomePage from './pages/HomePage/HomePage.jsx';
 import AboutPage from './pages/AboutPage/AboutPage.jsx';
 import WelcomeScreen from './pages/WelcomeScreen/WelcomeScreen.jsx';
 import LoginPage from './pages/LoginPage/LoginPage.jsx';

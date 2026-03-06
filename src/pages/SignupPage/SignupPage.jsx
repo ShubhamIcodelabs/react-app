@@ -1,77 +1,251 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import css from './SignupPage.module.css'
 import { useNavigate } from 'react-router-dom';
 
+const MIN_NAME_LENGTH = 2;
+const MIN_PASSWORD_LENGTH = 8;
+const REDIRECT_DELAY = 2000;
+const PASSWORD_REGEX = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+const EMAIL_REGEX = /\S+@\S+\.\S+/;
+
 function SignupPage() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: ""
   });
-  
 
- const handleChange = (e) => {
-   setFormData({
-    ...formData,
-    [e.target.name]: e.target.value
-   });
- }
+  const [message, setMessage] = useState("");
+  const [type, setType] = useState("");
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    
-    if(formData.password !== formData.confirmPassword){
-      alert('passwords do not match')
-      return
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
     }
-    localStorage.setItem('user', JSON.stringify({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    }))
-    alert('Signup successful! Please login.')
-    navigate('/login')
-  }
+
+    if (message) {
+      setMessage("");
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    const { name, email, password, confirmPassword } = formData;
+
+    if (!name.trim()) {
+      newErrors.name = "Name is required";
+    } else if (name.trim().length < MIN_NAME_LENGTH) {
+      newErrors.name = `Name must be at least ${MIN_NAME_LENGTH} characters`;
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!EMAIL_REGEX.test(email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < MIN_PASSWORD_LENGTH) {
+      newErrors.password = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`;
+    } else if (!PASSWORD_REGEX.test(password)) {
+      newErrors.password = "Password must contain uppercase, lowercase, and number";
+    }
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please conform your password"
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Password do not match"
+    }
+
+    return newErrors;
+  };
+
+  const checkExistingUser = (email) => {
+    try {
+      const usersData = localStorage.getItem('users');
+      if (!usersData) return false;
+
+      const users = JSON.parse(usersData);
+      return users.some(user => user.email === email);
+    } catch (error) {
+      console.error('Error checking existing user:', error);
+      return false;
+    }
+  };
+
+  const saveUser = (userData) => {
+    try {
+      const usersData = localStorage.getItem('users');
+      const users = usersData ? JSON.parse(usersData) : [];
+
+      users.push(userData);
+      localStorage.setItem('users', JSON.stringify(users));
+      return true;
+    } catch (error) {
+      console.error('Error saving user:', error);
+      throw new Error('Failed to save user data. Please try again.');
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Prevent multiple submissions
+    if (isLoading) return;
+
+    // Validate form
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Check if email already exists
+      if (checkExistingUser(formData.email)) {
+        setMessage("Email already registered. Please login.");
+        setType("error");
+        setIsLoading(false);
+        return;
+      }
+
+      // Prepare user data (without password hashing for simplicity)
+      const userData = {
+        id: Date.now(), // Simple ID generation
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password, // In production, hash this on backend
+        createdAt: new Date().toISOString()
+      };
+
+      // Save user
+      saveUser(userData);
+
+      // Show success message
+      setMessage("Signup successful! Redirecting to login...");
+      setType("success");
+
+      // Clear form
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+      });
+
+      // Redirect after delay
+      setTimeout(() => {
+        navigate('/login');
+      }, REDIRECT_DELAY);
+
+    } catch (error) {
+      setMessage(error.message || "Something went wrong. Please try again.");
+      setType("error");
+      setIsLoading(false);
+    }
+  };
+
+  // Check if all fields are filled
+  const isFormValid =
+    formData.name.trim() !== "" &&
+    formData.email.trim() !== "" &&
+    formData.password.trim() !== "" &&
+    formData.confirmPassword.trim() !== "";
+
   return (
     <div className={css.signupWrapper}>
       <div className={css.authContainer}>
         <h2>Sign Up</h2>
-        <form className={css.authForm} onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name='name'
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-          />
-          <input
-            type="email"
-            name='email'
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-          />
-          <input 
-            type="password" 
-            name='password'
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password" 
-          />
-          <input 
-            type="password" 
-            name='confirmPassword'
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm Password" 
-          />
-          <button type="submit">Sign Up</button>
+        {message && <div className={`${css.alert} ${type === "error" ? css.error : css.success}`}>{message}</div>}
+        <form className={css.authForm} onSubmit={handleSubmit} noValidate>
+          <div className={css.formGroup}>
+            <input
+              type="text"
+              name='name'
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Full Name"
+              disabled={isLoading}
+            />
+            {errors.name && 
+              <span className={css.errorText} role="alert">
+                {errors.name}
+              </span>
+            }
+          </div>
+          <div className={css.formGroup}>
+            <input
+              type="email"
+              name='email'
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              disabled={isLoading}
+            />
+            {errors.email && 
+              <span className={css.errorText} role="alert">
+                {errors.email}
+              </span>
+            }
+          </div>
+          <div className={css.formGroup}>
+            <input
+              type="password"
+              name='password'
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+            />
+            {errors.password && 
+              <span className={css.errorText} role="alert">
+                {errors.password}
+              </span>
+            }
+          </div>
+          <div className={css.formGroup}>
+            <input
+              type="password"
+              name='confirmPassword'
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirm Password"
+            />
+            {errors.confirmPassword && 
+              <span className={css.errorText} role="alert">
+                {errors.confirmPassword}
+              </span>
+            }
+          </div>
+          <button 
+            type="submit"
+            disabled={!isFormValid || isLoading}
+          >
+            Sign Up
+          </button>
         </form>
       </div>
     </div>
   )
 }
 
-export default SignupPage
+export default SignupPage;

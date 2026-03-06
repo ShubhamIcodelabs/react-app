@@ -2,6 +2,8 @@ import { useState } from 'react';
 import css from './LoginPage.module.css';
 import { useNavigate } from 'react-router-dom';
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const LoginPage = () => {
     const navigate = useNavigate();
 
@@ -9,65 +11,127 @@ const LoginPage = () => {
         email: '',
         password: ''
     });
+
     const [errors, setErrors] = useState({});
-    const [strength, setStrength] = useState('');
-    
-    const getStrength = (pwd) =>{
-        if(!pwd) return '';
-        const score = [
-            pwd.length>=8,
-            /[a-z]/.test(pwd),
-            /[A-Z]/.test(pwd),
-            /[0-9]/.test(pwd)
-        ].filter(Boolean).length;
-        return score <=2 ? 'Weak': score === 3 ? 'Normal' : 'Strong';
-    }
+    const [message,setMessage] = useState('');
+    console.log(message,"message")
+    const [isLoading, setIsLoading] = useState(false);
+
+    // const [strength, setStrength] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm({...form,[name]:value});
-        if(name === 'password') setStrength(getStrength(value));
-        // setForm({...form, [e.target.name]: e.target.value,});
-    }
 
-    const validation =()=>{
+        setForm(prev => ({
+            ...form,
+            [name]:value
+        }));
+
+        // if(name === 'password') setStrength(getStrength(value));
+        // setForm({...form, [e.target.name]: e.target.value,});
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ""
+            }));
+        }
+
+        if (message) {
+            setMessage('');
+        }
+    };
+
+    const validateForm =()=>{
         let newErrors = {};
+
         if(!form.email.trim()){
             newErrors.email = "Email is required";
-        } else if(!/\S+@\S+\.\S+/.test(form.email)){
+        } else if(!EMAIL_REGEX.test(form.email)){
             newErrors.email = "Please enter valid email";
         } 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-        if(!passwordRegex.test(form.password)){
-            newErrors.password = "Password must be at least 8 characters and contain uppercase, lowercase, and number";
+        
+        if (!form.password) {
+            newErrors.password = "Password is required";
         }
         
         return newErrors;
     }
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
 
-        const validationErrors = validation()
-        setErrors(validationErrors);
+    const findUser = (email, password) => {
+        try {
+            const usersData = localStorage.getItem('users');
 
-        if (Object.keys(validationErrors).length===0){
-            
+            if (!usersData) {
+                return null;
+            }
+
+            const users = JSON.parse(usersData);
+            return users.find (
+                user => user.email === email && user.password === password
+            );
+        } catch (error) {
+            console.error("Error finding user:", error);
+            return null;
+        }
+    };
+
+    const setAuthentication = (user) => {
+        try {
             localStorage.setItem('isAuthenticated', 'true');
             localStorage.setItem('currentUser', JSON.stringify({
-                name: form.email.split('@')[0],
-                email: form.email
-            }))
-            navigate('/home');
+                id: user.id,
+                name: user.name,
+                email: user.email
+            }));
+            return true;
+        } catch (error) {
+            console.error("Error setting authentication", error);
+            throw new Error("Failed to save login session");
         }
-    }
+    };
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (isLoading) return;
+        
+        const validationErrors = validateForm()
+        // setErrors(validationErrors);
+
+        if(Object.keys(validationErrors).length> 0){
+            setErrors(validationErrors);
+            return;
+        }
+        setIsLoading(true);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const user = findUser(form.email, form.password);
+            
+            if (!user) {
+                setMessage('Invalid email and password');
+                setIsLoading(false);
+                return;
+            } 
+            setAuthentication(user);
+
+            navigate('/home');
+        } catch (error) {
+            setMessage(error.message || 'Something went wrong. Please try again');
+            setIsLoading(false);
+        }
+    };
+
+    const isFormValid = 
+    form.email.trim() !== ''&& form.password.trim() !== '';
 
     
     return (
         <div className={css.loginWrapper}>
             <div className={css.authContainer}>
                 <h2>Login</h2>
+                {message && <div>{message}</div>}
                 <form className={css.authForm} onSubmit={handleSubmit}>
                     <input
                         type="email"
@@ -76,7 +140,7 @@ const LoginPage = () => {
                         value={form.email}
                         onChange={handleChange}
                     />
-                    {errors.email&&<p>{errors.email}</p>}
+                    {errors.email&&<p className={css.errorMessage}>{errors.email}</p>}
                     <input
                         type="password"
                         placeholder="Password"
@@ -84,11 +148,18 @@ const LoginPage = () => {
                         value={form.password}
                         onChange={handleChange}
                     />
-                    {errors.password&&<p>{errors.password}</p>}
-                 {strength && <p style={{color: strength === 'Weak' ? '#ef4444' : strength === 'Normal' ? '#f59e0b' : '#10b981',}}>
-                        Password Strength: {strength}
-                    </p>}
-                    <button type="submit">Login</button>
+                    {errors.password&&<p className={css.errorMessage}>{errors.password}</p>}
+                    {/* {strength && 
+                        <p style={{color: strength === 'Weak' ? '#ef4444' : strength === 'Normal' ? '#f59e0b' : '#10b981',}}>
+                            Password Strength: {strength}
+                        </p>
+                    } */}
+                    <button 
+                        type="submit"
+                        disabled={!isFormValid || isLoading}
+                    >
+                        Login
+                    </button>
                 </form>
             </div>
         </div>

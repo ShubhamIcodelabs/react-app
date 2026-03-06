@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import HeroSection from "../../components/HeroSection/HeroSection"
 import AboutUsSection from "../../components/AboutUsSection/AboutUsSection"
 import HowItWorkSection from "../../components/HowItWorkSection/HowItWorkSection"
+import css from './HomePage.module.css';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -29,32 +30,16 @@ const HomePage = () => {
     };
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div className="loader"></div>;
     }
 
     return (
         <div>
-            <header style={{ 
-                background: '#667eea', 
-                color: 'white', 
-                padding: '1rem 2rem', 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center' 
-            }}>
+            <header className={css.header}>
                 <h1>Welcome, {user.name}!</h1>
                 <button 
                     onClick={handleLogout}
-                    style={{
-                        background: 'white',
-                        color: '#667eea',
-                        border: 'none',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '5px',
-                        cursor: 'pointer',
-                        fontWeight: 'bold'
-                    }}
-                >
+                    className={css.logoutBtn}>
                     Logout
                 </button>
             </header>

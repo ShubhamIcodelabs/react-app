@@ -1,4 +1,3 @@
-import React from 'react'
 import css from './HowItWorkSection.module.css'
 import IconCard from '../IconCard/IconCard'
 
