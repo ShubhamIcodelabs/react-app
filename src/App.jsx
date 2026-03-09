@@ -4,17 +4,27 @@ import AboutPage from './pages/AboutPage/AboutPage.jsx';
 import WelcomeScreen from './pages/WelcomeScreen/WelcomeScreen.jsx';
 import LoginPage from './pages/LoginPage/LoginPage.jsx';
 import SignupPage from './pages/SignupPage/SignupPage.jsx';
+import SearchPage from './pages/SearchPage/SearchPage.jsx';
+import Layout from './components/Layout/Layout.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import FavouritePage from './pages/FavouritePage/FavouritePage.jsx';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Routes without header */}
         <Route path='/' element={<WelcomeScreen />} />
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/login' element={<LoginPage />} />
-        <Route path='/home' element={<HomePage />} />
-        <Route path='/about' element={<AboutPage />} />
+        
+        {/* Routes with header (wrapped in Layout) */}
+        <Route element={<Layout />}>
+          <Route path='/home' element={<HomePage />} />
+          <Route path='/search' element={<SearchPage />} />
+          <Route path='/about' element={<AboutPage />} />
+          <Route path="/favourite" element={<FavouritePage/>} /> 
+        </Route>
       </Routes>
    </BrowserRouter>
   );

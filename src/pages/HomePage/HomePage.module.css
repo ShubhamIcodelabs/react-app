@@ -20,3 +20,34 @@
 .logoutBtn:hover {
   opacity: 0.9;
 }
+.headerRight{
+  display: flex;
+  & .cartButton{
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    color: #667eea;
+    font-family: Unbounded;
+    border-radius: 5px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+ 
+    font-size: 14px;
+        
+    & svg{
+      width: 25px;
+      height: 25px;
+    }
+  }
+}
+.centerLinks{
+  & a{
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+}
