@@ -54,10 +54,9 @@ const FavouritePage = () => {
                 key={item.id}
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition relative"
               >
-                {/* Remove Button */}
                 <button
                   onClick={() => removeFavorite(item.id)}
-                  className="absolute top-3 right-3 z-10 bg-white rounded-full p-2 shadow-md hover:scale-110 transition"
+                  className="absolute top-3 right-3 z-10 bg-white rounded-full p-2 shadow-md hover:scale-110 transition cursor-pointer"
                   aria-label="Remove from favorites"
                 >
                   <svg

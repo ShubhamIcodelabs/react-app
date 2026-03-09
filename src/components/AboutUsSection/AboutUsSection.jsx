@@ -3,85 +3,64 @@ import styles from './AboutUsSection.module.css'
 
 const AboutUsSection = () => {
     return (
-        <section className={styles.aboutUs}>
-            <div className={styles.container}>
-                <div className={styles.header}>
-                    <h2 className={styles.title}>
-                        About <span>Us</span>
-                    </h2>
-                    <div className={styles.divider}></div>
-                </div>
-                
-                <div className={styles.content}>
-                    <div className={styles.textContent}>
-                        <h3 className={styles.subtitle}>
-                            We're Building Tomorrow's Solutions Today
-                        </h3>
-                        <p className={styles.description}>
-                            With years of experience and a passion for innovation, we've established ourselves as leaders in delivering exceptional digital solutions that transform businesses and delight customers.
-                        </p>
-                        <p className={styles.description}>
-                            Our team of dedicated professionals combines creativity with technical expertise to create solutions that not only meet your needs but exceed your expectations.
-                        </p>
-                        
-                        <div className={styles.stats}>
-                            <div className={styles.statItem}>
-                                <div className={styles.statNumber}>500+</div>
-                                <div className={styles.statLabel}>Happy Clients</div>
-                            </div>
-                            <div className={styles.statItem}>
-                                <div className={styles.statNumber}>1000+</div>
-                                <div className={styles.statLabel}>Projects Done</div>
-                            </div>
-                            <div className={styles.statItem}>
-                                <div className={styles.statNumber}>10+</div>
-                                <div className={styles.statLabel}>Years Experience</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className={styles.featureCard}>
-                        <div className={styles.featureList}>
-                            <div className={styles.featureItem}>
-                                <div className={`${styles.icon} ${styles.blueIcon}`}>
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 className={styles.featureTitle}>Innovation First</h4>
-                                    <p className={styles.featureDescription}>We push boundaries and explore new possibilities to deliver cutting-edge solutions.</p>
-                                </div>
-                            </div>
-                            
-                            <div className={styles.featureItem}>
-                                <div className={`${styles.icon} ${styles.greenIcon}`}>
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 className={styles.featureTitle}>Customer Centric</h4>
-                                    <p className={styles.featureDescription}>Your success is our success. We're committed to understanding and meeting your unique needs.</p>
-                                </div>
-                            </div>
-                            
-                            <div className={styles.featureItem}>
-                                <div className={`${styles.icon} ${styles.purpleIcon}`}>
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 className={styles.featureTitle}>Quality Assured</h4>
-                                    <p className={styles.featureDescription}>Every solution we deliver meets the highest standards of excellence and reliability.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="bg-gray-900 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:text-center">
+      <h2 class="text-base/7 font-semibold text-indigo-400">Deploy faster</h2>
+      <p class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl lg:text-balance">Everything you need to deploy your app</p>
+      <p class="mt-6 text-lg/8 text-gray-300">Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In mi viverra elit nunc.</p>
+    </div>
+    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-white">
+            <div class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-500">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-white">
+                <path d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </div>
-        </section>
+            Push to deploy
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-400">Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi. Odio urna massa nunc massa.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-white">
+            <div class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-500">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-white">
+                <path d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            SSL certificates
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-400">Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget. Sem sodales gravida quam turpis enim lacus amet.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-white">
+            <div class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-500">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-white">
+                <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            Simple queues
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-400">Quisque est vel vulputate cursus. Risus proin diam nunc commodo. Lobortis auctor congue commodo diam neque.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-white">
+            <div class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-500">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-white">
+                <path d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            Advanced security
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-400">Arcu egestas dolor vel iaculis in ipsum mauris. Tincidunt mattis aliquet hac quis. Id hac maecenas ac donec pharetra eget.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
     )
 }
 
