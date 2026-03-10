@@ -5,36 +5,48 @@ const dummyData = [
         id: 1,
         title: "React Course",
         description: "Learn React step by step",
+        discountPrice: "100",
+        price: "90",
         image: "https://picsum.photos/400/200?1"
     },
     {
         id: 2,
         title: "JavaScript Guide",
         description: "Master JavaScript fundamentals",
+        discountPrice: "$50",
+        price: "45",
         image: "https://picsum.photos/400/200?2"
     },
     {
         id: 3,
         title: "Node.js Backend",
         description: "Build APIs with Node.js",
+        discountPrice: "160",
+        price: "140",
         image: "https://picsum.photos/400/200?3"
     },
     {
         id: 4,
         title: "MongoDB Basics",
         description: "Understand NoSQL databases",
+        discountPrice: "290",
+        price: "240",
         image: "https://picsum.photos/400/200?4"
     },
     {
         id: 5,
         title: "Tailwind CSS",
         description: "Build modern UI faster",
+        discountPrice: "150",
+        price: "130",
         image: "https://picsum.photos/400/200?5"
     },
     {
         id: 6,
         title: "Next.js Guide",
         description: "Server-side React applications",
+        discountPrice: "300",
+        price: "260",
         image: "https://picsum.photos/400/200?6"
     }
 ];
@@ -75,106 +87,73 @@ function SearchPage() {
     };
 
     return (
-        <div>
-            <div className="min-h-screen bg-gray-100 p-8">
-                <div className="max-w-2xl mx-auto mb-10">
-                    <input
-                        type="text"
-                        placeholder="Search courses..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full px-5 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
-                <div className="container m-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {filteredData.map((item) => {
+        <div className="bg-[#111827]">
+            <div class="container m-auto py-10 hidden xl:block">
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">People also bought</h3>
+                <div class="mt-6 grid grid-cols-4 gap-4 sm:mt-8">
+                    {dummyData.map((item, i) => {
                         const isFavorite = favorites.includes(item.id);
                         return (
-                            <div
-                                key={item.id}
-                                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition relative"
-                            >
-                                {/* Favorite Icon */}
-                                <button
-                                    onClick={() => toggleFavorite(item.id)}
-                                    className="absolute top-3 right-3 z-10 bg-white rounded-full p-2 shadow-md hover:scale-110 transition"
-                                    aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 cursor-pointer"
-                                        fill={isFavorite ? "red" : "none"}
-                                        viewBox="0 0 24 24"
-                                        stroke={isFavorite ? "red" : "currentColor"}
-                                        strokeWidth={2}
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                            <div key={i} class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                                <a href="#" class="overflow-hidden rounded">
+                                    <img
+                                        src={item.image}
+                                        alt="imac image"
+                                        class="mx-auto h-44 dark:hidden"
                                         />
-                                    </svg>
-                                </button>
-
-                                <img
-                                    src={item.image}
-                                    alt={item.title}
-                                    className="w-full h-40 object-cover"
-                                />
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                                    <p className="text-gray-600 text-sm mb-4">
-                                        {item.description}
+                                    <img
+                                        src={item.image}
+                                        alt="imac image"
+                                        class="mx-auto hidden h-44 dark:block"
+                                    />
+                                </a>
+                                <div className="mt-10">
+                                    <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{item.title}</a>
+                                    <p class="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">{item.description}</p>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        <span class="line-through">&#8377; {item.discountPrice} </span>
                                     </p>
-                                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                                        View Details
+                                    <p class="text-lg font-bold leading-tight text-red-600 dark:text-red-500">&#8377; {item.price}</p>
+                                </div>
+                                <div class="mt-6 flex items-center gap-2.5">
+                                    <button
+                                        data-tooltip-target="favourites-tooltip-3"
+                                        type="button"
+                                        onClick={() => toggleFavorite(item.id)}
+                                        class="cursor-pointer inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white p-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+                                        <svg
+                                            class="h-5 w-5"
+                                            aria-hidden="true"
+                                            viewBox="0 0 24 24"
+                                            fill={isFavorite ? "red" : "none"}
+                                            stroke={isFavorite ? "red" : "currentColor"}
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z" />
+                                        </svg>
+                                    </button>
+                                    {/* <div
+                                        id="favourites-tooltip-3"
+                                        role="tooltip"
+                                        class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+                                        Add to favourites
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div> */}
+
+                                    <button type="button" class="inline-flex w-full items-center justify-center rounded-lg bg-[#2563eb] hover:bg-[#1d4ed8] px-5 py-2.5 text-sm font-medium text-white cursor-pointer">
+                                        <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
+                                        </svg>
+                                        Add to cart
                                     </button>
                                 </div>
                             </div>
                         )
                     })}
-                </div>
-                <div class="flex items-center justify-between border-t border-white/10 px-4 py-3 sm:px-6">
-                    <div class="flex flex-1 justify-between sm:hidden">
-                        <a href="#" class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Previous</a>
-                        <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Next</a>
-                    </div>
-                    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                        <div>
-                            <p class="text-sm text-gray-300">
-                                Showing
-                                <span class="font-medium">1</span>
-                                to
-                                <span class="font-medium">10</span>
-                                of
-                                <span class="font-medium">97</span>
-                                results
-                            </p>
-                        </div>
-                        <div>
-                            <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md">
-                                <a href="#" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0">
-                                    <span class="sr-only">Previous</span>
-                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
-                                        <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
-                                    </svg>
-                                </a>
-                                <a href="#" aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-500 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">1</a>
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0">2</a>
-                                <a href="#" class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-200 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0 md:inline-flex">3</a>
-                                <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 inset-ring inset-ring-gray-700 focus:outline-offset-0">...</span>
-                                <a href="#" class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-200 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0 md:inline-flex">8</a>
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0">9</a>
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0">10</a>
-                                <a href="#" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0">
-                                    <span class="sr-only">Next</span>
-                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5">
-                                        <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
-                                    </svg>
-                                </a>
-                            </nav>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

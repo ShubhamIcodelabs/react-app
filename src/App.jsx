@@ -8,6 +8,8 @@ import SearchPage from './pages/SearchPage/SearchPage.jsx';
 import Layout from './components/Layout/Layout.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FavouritePage from './pages/FavouritePage/FavouritePage.jsx';
+import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
+import CartPage from './pages/CartPage/CartPage.jsx';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path='/search' element={<SearchPage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path="/favourite" element={<FavouritePage/>} /> 
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/cart" element={<CartPage />} />
         </Route>
       </Routes>
    </BrowserRouter>

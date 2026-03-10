@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
+import BackToTop from '../BackToTop/BackToTop';
 
 const Layout = () => {
   return (
@@ -8,6 +9,7 @@ const Layout = () => {
       <Header />
       <main>
         <Outlet />
+        <BackToTop/>
       </main>
       <Footer />
     </div>

@@ -1,9 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import IconCard from '../IconCard/IconCard';
 
 const Header = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(false);
+
 
   useEffect(() => {
     const currentUser = localStorage.getItem('currentUser');
@@ -19,34 +22,13 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#1C3533] text-white shadow-md">
+    <header className="bg-[#101828] text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex items-center">
             <h1 className="text-2xl font-bold cursor-pointer" onClick={() => navigate('/home')}>
-              <svg width="138" height="34" viewBox="0 0 138 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 16.9559C0 7.5914 7.5914 0 16.9559 0C26.3203 0 33.9117 7.61344 33.9117 16.9779C33.9117 26.3667 26.3006 34 16.9117 34H0V16.9559Z" fill="#00674F" />
-                <path d="M138 7.51172V27.1665H133.963V7.51172H138Z" fill="white" />
-                <path d="M117.448 27.137V7.54428C119.034 7.27518 120.953 7.14062 123.207 7.14062C125.814 7.14062 127.755 7.75128 129.027 8.97259C130.029 9.9455 130.53 11.2289 130.53 12.8228C130.53 13.7957 130.123 14.6858 129.309 15.4931C128.495 16.2797 127.588 16.673 126.586 16.673V16.7041C127.963 16.849 129.048 17.3769 129.841 18.2877C130.655 19.1985 131.062 20.3473 131.062 21.7342C131.062 23.68 130.238 25.1705 128.589 26.2055C127.15 27.0956 125.23 27.5406 122.831 27.5406C120.745 27.5406 118.95 27.4061 117.448 27.137ZM121.548 10.6183V15.1516H123.864C125.616 15.1516 126.493 14.4167 126.493 12.947C126.493 11.3117 125.429 10.4734 123.3 10.4319H123.207C122.685 10.4319 122.132 10.494 121.548 10.6183ZM121.548 18.4119V24.094C122.07 24.2597 122.81 24.3425 123.77 24.3425C125.794 24.3425 126.806 23.4627 126.806 21.7032C126.806 19.509 125.762 18.4119 123.676 18.4119H121.548Z" fill="white" />
-                <path d="M113.704 7.51172V27.1665H109.667V7.51172H113.704Z" fill="white" />
-                <path d="M92.311 27.137V7.54428C93.8967 7.27518 95.8161 7.14062 98.0693 7.14062C100.677 7.14062 102.618 7.75128 103.89 8.97259C104.892 9.9455 105.392 11.2289 105.392 12.8228C105.392 13.7957 104.986 14.6858 104.172 15.4931C103.358 16.2797 102.451 16.673 101.449 16.673V16.7041C102.826 16.849 103.911 17.3769 104.704 18.2877C105.518 19.1985 105.924 20.3473 105.924 21.7342C105.924 23.68 105.1 25.1705 103.452 26.2055C102.013 27.0956 100.093 27.5406 97.6938 27.5406C95.6075 27.5406 93.8132 27.4061 92.311 27.137ZM96.4107 10.6183V15.1516H98.7265C100.479 15.1516 101.355 14.4167 101.355 12.947C101.355 11.3117 100.291 10.4734 98.1632 10.4319H98.0693C97.5478 10.4319 96.9949 10.494 96.4107 10.6183ZM96.4107 18.4119V24.094C96.9323 24.2597 97.6729 24.3425 98.6327 24.3425C100.656 24.3425 101.668 23.4627 101.668 21.7032C101.668 19.509 100.625 18.4119 98.5388 18.4119H96.4107Z" fill="white" />
-                <path d="M79.7596 7.51172H83.202L90.4938 27.1665H86.3315C85.9769 26.1315 85.5387 24.7653 85.0171 23.0679H77.9131C77.621 23.9994 77.1725 25.3656 76.5674 27.1665H72.4678L79.7596 7.51172ZM81.5121 12.8213C80.9279 14.4566 80.1247 16.7543 79.1024 19.7145H83.8592C82.8786 16.8578 82.0963 14.5601 81.5121 12.8213Z" fill="white" />
-                <path d="M57.9137 27.168V7.54428C58.2058 7.48218 59.0299 7.39938 60.386 7.29588C61.7421 7.19238 62.7749 7.14062 63.4842 7.14062C68.5332 7.14062 71.0577 9.18994 71.0577 13.2886C71.0577 15.5035 70.1501 17.3872 68.335 18.9397C69.0861 20.6578 70.3692 23.4006 72.1843 27.168H68.0533C67.031 24.9531 65.9253 22.5726 64.736 20.0265C64.5065 20.0679 64.1936 20.0886 63.7972 20.0886C62.8792 20.0886 62.2846 20.0058 62.0134 19.8402V27.168H57.9137ZM62.0134 10.6183V16.5488C62.6393 16.7351 63.3173 16.8283 64.0476 16.8283C65.8418 16.8283 66.7389 15.6484 66.7389 13.2886C66.7389 11.3635 65.8105 10.4009 63.9537 10.4009C62.8896 10.4009 62.2429 10.4734 62.0134 10.6183Z" fill="white" />
-                <path d="M44.9441 7.51172H48.3866L55.6784 27.1665H51.5161C51.1614 26.1315 50.7233 24.7653 50.2017 23.0679H43.0977C42.8056 23.9994 42.3571 25.3656 41.752 27.1665H37.6523L44.9441 7.51172ZM46.6967 12.8213C46.1125 14.4566 45.3092 16.7543 44.2869 19.7145H49.0438C48.0632 16.8578 47.2808 14.5601 46.6967 12.8213Z" fill="white" />
-                <path d="M8.46777 16.4877C8.46777 13.4928 10.8956 11.0508 13.8906 11.0508V16.4877H8.46777Z" fill="white" />
-                <path d="M14.0718 17.2145C13.3359 17.2145 12.6072 17.3575 11.9274 17.6353C11.2475 17.9131 10.6298 18.3202 10.1095 18.8335C9.58914 19.3468 9.17639 19.9561 8.89478 20.6267C8.61318 21.2974 8.46824 22.0161 8.46824 22.742C8.46824 23.4679 8.61318 24.1867 8.89478 24.8573C9.17639 25.5279 9.58914 26.1373 10.1095 26.6506C10.6298 27.1638 11.2475 27.571 11.9274 27.8488C12.6072 28.1266 13.3359 28.2695 14.0718 28.2695L14.0718 22.742V17.2145Z" fill="white" />
-                <path d="M21.4819 17.2145C22.2178 17.2145 22.9465 17.3575 23.6263 17.6353C24.3062 17.9131 24.9239 18.3202 25.4442 18.8335C25.9646 19.3468 26.3773 19.9561 26.6589 20.6267C26.9405 21.2974 27.0855 22.0161 27.0855 22.742C27.0855 23.4679 26.9405 24.1867 26.6589 24.8573C26.3773 25.5279 25.9646 26.1373 25.4442 26.6506C24.9239 27.1638 24.3062 27.571 23.6263 27.8488C22.9465 28.1266 22.2178 28.2695 21.4819 28.2695L21.4819 22.742V17.2145Z" fill="white" />
-                <path d="M15.1564 11.0508C18.0515 11.0508 20.3984 13.3977 20.3984 16.2928V28.2676C17.5033 28.2676 15.1564 25.9207 15.1564 23.0256V11.0508Z" fill="white" />
-                <g clipPath="url(#clip0_1939_4364)">
-                  <path d="M16.0855 5.0274C17.0798 5.03224 17.8847 5.83711 17.8895 6.83146C17.8895 8.6532 14.5733 10.4573 14.5733 10.4573C14.5733 10.4573 11.257 8.62668 11.257 6.83146C11.257 5.83511 12.0647 5.0274 13.061 5.0274C13.3611 5.02506 13.657 5.09837 13.9213 5.24057C14.1856 5.38276 14.4098 5.58926 14.5733 5.84099C14.7379 5.5904 14.9623 5.38478 15.2264 5.24273C15.4904 5.10068 15.7857 5.02667 16.0855 5.0274Z" fill="#FEC220" />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1939_4364">
-                    <rect width="6.63258" height="6.63258" fill="white" transform="translate(11.257 4.42578)" />
-                  </clipPath>
-                </defs>
-              </svg>
+              <IconCard type="logo" />
             </h1>
           </div>
 
@@ -65,12 +47,6 @@ const Header = () => {
               Search
             </button>
             <button
-              onClick={() => navigate('/favourite')}
-              className="hover:text-indigo-200 transition cursor-pointer"
-            >
-              Favorites
-            </button>
-            <button
               onClick={() => navigate('/about')}
               className="hover:text-indigo-200 transition cursor-pointer"
             >
@@ -82,25 +58,55 @@ const Header = () => {
             <Link to="/favourite">
               <svg fill="#fff" width="25px" height="25px" viewBox="0 0 0.75 0.75" xmlns="http://www.w3.org/2000/svg" id="favourite" className="icon glyph"><path d="M0.634 0.148a0.182 0.182 0 0 0 -0.259 0 0.182 0.182 0 0 0 -0.259 0 0.186 0.186 0 0 0 0 0.261l0.237 0.238a0.031 0.031 0 0 0 0.044 0l0.237 -0.238a0.185 0.185 0 0 0 0 -0.261" /></svg>
             </Link>
-            {user && (
+            {/* {user && (
               <span className="text-sm">
                 Welcome, <span className="font-semibold">{user.name}</span>
               </span>
-            )}
-            <button type="button" class="relative inline-flex items-center p-2 text-sm font-medium text-center text-white bg-[#fff] rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M21 15H11C8.17157 15 6.75736 15 5.87868 14.1213C5 13.2426 5 11.8284 5 9V5C5 3.89543 4.10457 3 3 3M10 19.5C10 20.3284 9.32843 21 8.5 21C7.67157 21 7 20.3284 7 19.5C7 18.6716 7.67157 18 8.5 18C9.32843 18 10 18.6716 10 19.5ZM18 19.5C18 20.3284 17.3284 21 16.5 21C15.6716 21 15 20.3284 15 19.5C15 18.6716 15.6716 18 16.5 18C17.3284 18 18 18.6716 18 19.5ZM12.5 11H16.5C17.9045 11 18.6067 11 19.1111 10.6629C19.3295 10.517 19.517 10.3295 19.6629 10.1111C20 9.60669 20 8.90446 20 7.5C20 6.09554 20 5.39331 19.6629 4.88886C19.517 4.67048 19.3295 4.48298 19.1111 4.33706C18.6067 4 17.9045 4 16.5 4H12.5C11.0955 4 10.3933 4 9.88886 4.33706C9.67048 4.48298 9.48298 4.67048 9.33706 4.88886C9 5.39331 9 6.09554 9 7.5C9 8.90446 9 9.60669 9.33706 10.1111C9.48298 10.3295 9.67048 10.517 9.88886 10.6629C10.3933 11 11.0955 11 12.5 11Z" stroke="blue" stroke-width="1.6" stroke-linecap="round"></path>
-              </svg>
-              <span class="sr-only">Notifications</span>
-              <div class="absolute inline-flex items-center justify-center py-0.5 px-1.5 text-xs font-normal text-white bg-red-500 border-2 border-white rounded-full -top-3 -left-3"> 5 </div>
-            </button>
+            )} */}
+            <div className="relative ml-3">
+              <button
+                onClick={() => setOpenDropdown(!openDropdown)}
+                className="flex rounded-full focus:outline-none"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+                  alt="profile"
+                  className="h-8 w-8 rounded-full"
+                />
+                
+              </button>
+              {openDropdown && (
+                <div className="absolute right-0 mt-2 p-2 w-48 bg-[#1e2939] rounded-md shadow-lg z-50">
+                  <button
+                    onClick={() => navigate('/profile')}
+                    className="block w-full text-left px-4 py-2 text-sm hover:bg-[#ffffff1a] cursor-pointer"
+                  >
+                    Your Profile
+                  </button>
 
-            <button
-              onClick={handleLogout}
-              className="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition font-medium cursor-pointer"
-            >
-              Logout
-            </button>
+                  <button
+                    onClick={() => navigate('/cart')}
+                    className="block w-full text-left px-4 py-2 text-sm hover:bg-[#ffffff1a] cursor-pointer"
+                  >
+                    Cart
+                  </button>
+
+                  <button
+                    onClick={() => navigate('/settings')}
+                    className="block w-full text-left px-4 py-2 text-sm hover:bg-[#ffffff1a] cursor-pointer"
+                  >
+                    Settings
+                  </button>
+
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-fg-danger text-sm hover:bg-[#ffffff1a] cursor-pointer"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
