@@ -10,6 +10,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FavouritePage from './pages/FavouritePage/FavouritePage.jsx';
 import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
 import CartPage from './pages/CartPage/CartPage.jsx';
+import ContactPage from './pages/ContactPage/ContactPage.jsx';
+import NotFound from './pages/NotFound/NotFound.jsx';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path="/favourite" element={<FavouritePage/>} /> 
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/not-found" element={<NotFound />} />
         </Route>
       </Routes>
    </BrowserRouter>

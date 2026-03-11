@@ -1,18 +1,31 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import IconCard from '../IconCard/IconCard';
 
 const Header = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
-
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       setUser(JSON.parse(currentUser));
     }
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -52,28 +65,43 @@ const Header = () => {
             >
               About
             </button>
+            <button
+              onClick={() => navigate('/contact')}
+              className="hover:text-indigo-200 transition cursor-pointer"
+            >
+              Contact Us
+            </button>
           </nav>
 
           <div className="flex items-center space-x-4">
             <Link to="/favourite">
-              <svg fill="#fff" width="25px" height="25px" viewBox="0 0 0.75 0.75" xmlns="http://www.w3.org/2000/svg" id="favourite" className="icon glyph"><path d="M0.634 0.148a0.182 0.182 0 0 0 -0.259 0 0.182 0.182 0 0 0 -0.259 0 0.186 0.186 0 0 0 0 0.261l0.237 0.238a0.031 0.031 0 0 0 0.044 0l0.237 -0.238a0.185 0.185 0 0 0 0 -0.261" /></svg>
+              <svg
+                fill="#fff"
+                width="25px"
+                height="25px"
+                viewBox="0 0 0.75 0.75"
+                xmlns="http://www.w3.org/2000/svg"
+                id="favourite"
+                className="icon glyph">
+                <path d="M0.634 0.148a0.182 0.182 0 0 0 -0.259 0 0.182 0.182 0 0 0 -0.259 0 0.186 0.186 0 0 0 0 0.261l0.237 0.238a0.031 0.031 0 0 0 0.044 0l0.237 -0.238a0.185 0.185 0 0 0 0 -0.261" />
+              </svg>
             </Link>
             {/* {user && (
               <span className="text-sm">
                 Welcome, <span className="font-semibold">{user.name}</span>
               </span>
             )} */}
-            <div className="relative ml-3">
+            <div className="relative ml-3" ref={dropdownRef}>
               <button
                 onClick={() => setOpenDropdown(!openDropdown)}
-                className="flex rounded-full focus:outline-none"
+                className="flex rounded-full focus:outline-none cursor-pointer"
               >
                 <img
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
                   alt="profile"
                   className="h-8 w-8 rounded-full"
                 />
-                
+
               </button>
               {openDropdown && (
                 <div className="absolute right-0 mt-2 p-2 w-48 bg-[#1e2939] rounded-md shadow-lg z-50">

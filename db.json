@@ -1,0 +1,92 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "React for Beginners",
+      "instructor": "John Doe",
+      "category": "Frontend",
+      "price": 49,
+      "rating": 4.5,
+      "students": 1200,
+      "image": "https://picsum.photos/300/200?1",
+      "description": "Learn the fundamentals of React including components, hooks, and state management."
+    },
+    {
+      "id": 2,
+      "title": "Advanced React Patterns",
+      "instructor": "Sarah Lee",
+      "category": "Frontend",
+      "price": 69,
+      "rating": 4.7,
+      "students": 980,
+      "image": "https://picsum.photos/300/200?2",
+      "description": "Master advanced React patterns and performance optimization techniques."
+    },
+    {
+      "id": 3,
+      "title": "JavaScript Mastery",
+      "instructor": "David Smith",
+      "category": "Programming",
+      "price": 59,
+      "rating": 4.8,
+      "students": 2100,
+      "image": "https://picsum.photos/300/200?3",
+      "description": "Deep dive into modern JavaScript concepts and ES6+ features."
+    },
+    {
+      "id": 4,
+      "title": "Node.js Complete Guide",
+      "instructor": "Alex Brown",
+      "category": "Backend",
+      "price": 55,
+      "rating": 4.4,
+      "students": 1500,
+      "image": "https://picsum.photos/300/200?4",
+      "description": "Learn backend development using Node.js and Express."
+    },
+    {
+      "id": 5,
+      "title": "MongoDB for Developers",
+      "instructor": "Emily Clark",
+      "category": "Database",
+      "price": 45,
+      "rating": 4.3,
+      "students": 800,
+      "image": "https://picsum.photos/300/200?5",
+      "description": "Understand NoSQL databases and build scalable apps with MongoDB."
+    },
+    {
+      "id": 6,
+      "title": "Full Stack MERN Bootcamp",
+      "instructor": "Michael Scott",
+      "category": "Fullstack",
+      "price": 89,
+      "rating": 4.9,
+      "students": 3000,
+      "image": "https://picsum.photos/300/200?6",
+      "description": "Build full-stack applications using MongoDB, Express, React, and Node."
+    },
+    {
+      "id": 7,
+      "title": "CSS & Tailwind Masterclass",
+      "instructor": "Lisa Wong",
+      "category": "Frontend",
+      "price": 35,
+      "rating": 4.6,
+      "students": 950,
+      "image": "https://picsum.photos/300/200?7",
+      "description": "Design beautiful responsive interfaces using CSS and Tailwind."
+    },
+    {
+      "id": 8,
+      "title": "TypeScript Essentials",
+      "instructor": "Daniel Adams",
+      "category": "Programming",
+      "price": 40,
+      "rating": 4.5,
+      "students": 600,
+      "image": "https://picsum.photos/300/200?8",
+      "description": "Learn TypeScript to build safer and scalable JavaScript apps."
+    }
+  ]
+}

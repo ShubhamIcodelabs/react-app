@@ -1,8 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import css from './IconCard.module.css';
-
 const LOGO = 'logo';
 const USER = "user";
 const WORKBADGE = "workbadge";
@@ -18,7 +16,7 @@ const WORKBADGE = "workbadge";
  */
 const IconCard = props => {
   const { className, rootClassName, type = 'default' } = props;
-  const classes = classNames(rootClassName || css.root, className);
+  const classes = classNames(rootClassName || className);
 
   switch (type) {
     case WORKBADGE:

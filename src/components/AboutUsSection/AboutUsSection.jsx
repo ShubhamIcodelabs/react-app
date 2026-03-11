@@ -1,5 +1,4 @@
-import React from 'react'
-import styles from './AboutUsSection.module.css'
+import React from 'react';
 
 const AboutUsSection = () => {
     return (

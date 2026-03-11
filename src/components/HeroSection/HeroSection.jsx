@@ -1,5 +1,4 @@
 import React from 'react';
-import css from './HeroSection.module.css';
 import heroSectionImage from '../../assets/hero-section-image.png';
 
 function HeroSection() {
