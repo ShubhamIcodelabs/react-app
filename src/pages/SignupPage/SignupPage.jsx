@@ -8,6 +8,8 @@ const REDIRECT_DELAY = 2000;
 const PASSWORD_REGEX = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 
+const API_BASE_URL = "http://localhost:3001/api";
+
 function SignupPage() {
   const navigate = useNavigate();
 
@@ -77,30 +79,31 @@ function SignupPage() {
     return newErrors;
   };
 
-  const checkExistingUser = (email) => {
+  const signupAPI = async (userData) => {
+    console.log('userData', userData)
     try {
-      const usersData = localStorage.getItem('users');
-      if (!usersData) return false;
+      const response = await fetch(`${API_BASE_URL}/user/signup`,{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData)
+      });
+      
+      const data = await response.json();
+      console.log('data', data, response)
+      if(!response.ok) {
+        throw new Error(data.message || "Signup failed");
+      } 
+      return data;
 
-      const users = JSON.parse(usersData);
-      return users.some(user => user.email === email);
     } catch (error) {
-      console.error('Error checking existing user:', error);
-      return false;
-    }
-  };
+      console.log('error', error)
 
-  const saveUser = (userData) => {
-    try {
-      const usersData = localStorage.getItem('users');
-      const users = usersData ? JSON.parse(usersData) : [];
-
-      users.push(userData);
-      localStorage.setItem('users', JSON.stringify(users));
-      return true;
-    } catch (error) {
-      console.error('Error saving user:', error);
-      throw new Error('Failed to save user data. Please try again.');
+      if (error.message === "Failed to fetch") {
+        throw new Error('Cannot connect to server. please try again later.');
+      }
+      throw error;
     }
   };
 
@@ -121,28 +124,18 @@ function SignupPage() {
     setIsLoading(true);
 
     try {
-      // Check if email already exists
-      if (checkExistingUser(formData.email)) {
-        setMessage("Email already registered. Please login.");
-        setType("error");
-        setIsLoading(false);
-        return;
-      }
-
-      // Prepare user data (without password hashing for simplicity)
+      // Prepare user data for api
       const userData = {
-        id: Date.now(), // Simple ID generation
         name: formData.name.trim(),
         email: formData.email.trim(),
         password: formData.password, // In production, hash this on backend
-        createdAt: new Date().toISOString()
       };
 
       // Save user
-      saveUser(userData);
+      const response = await signupAPI(userData);
 
       // Show success message
-      setMessage("Signup successful! Redirecting to login...");
+      setMessage(response.message || "Signup successful! Redirecting to login...");
       setType("success");
 
       // Clear form
