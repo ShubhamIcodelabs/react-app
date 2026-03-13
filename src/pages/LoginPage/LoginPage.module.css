@@ -78,3 +78,21 @@
 .switchAuth a:hover {
   text-decoration: underline;
 }
+
+.alert {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.error {
+  background-color: #952525;
+  color: #d8000c;
+}
+
+.success {
+  background-color: #e6ffed;
+  color: #2e7d32;
+}

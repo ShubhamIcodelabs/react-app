@@ -92,6 +92,7 @@ function SignupPage() {
       
       const data = await response.json();
       console.log('data', data, response)
+      
       if(!response.ok) {
         throw new Error(data.message || "Signup failed");
       } 

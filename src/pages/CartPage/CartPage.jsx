@@ -9,7 +9,7 @@ function CartPage() {
                         <li>
                             <div className="flex items-center">
                                 <a href="#" className="mr-2 text-sm font-medium text-gray-900">Men</a>
-                                <svg viewBox="0 0 16 20" width="16" height="20" fill="currentColor" aria-hidden="true" className="h-5 w-4 text-gray-300">
+                                <svg viewBox="0 0 16 20" width="16" height="20" fill="currentColor" ariaHidden="true" className="h-5 w-4 text-gray-300">
                                     <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
                                 </svg>
                             </div>
@@ -17,7 +17,7 @@ function CartPage() {
                         <li>
                             <div className="flex items-center">
                                 <a href="#" className="mr-2 text-sm font-medium text-gray-900">Clothing</a>
-                                <svg viewBox="0 0 16 20" width="16" height="20" fill="currentColor" aria-hidden="true" className="h-5 w-4 text-gray-300">
+                                <svg viewBox="0 0 16 20" width="16" height="20" fill="currentColor" ariaHidden="true" className="h-5 w-4 text-gray-300">
                                     <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
                                 </svg>
                             </div>
@@ -49,19 +49,19 @@ function CartPage() {
                             <h3 className="sr-only">Reviews</h3>
                             <div className="flex items-center">
                                 <div className="flex items-center">
-                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5 shrink-0 text-gray-900">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" ariaHidden="true" className="size-5 shrink-0 text-gray-900">
                                         <path d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" fill-rule="evenodd" />
                                     </svg>
-                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5 shrink-0 text-gray-900">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" ariaHidden="true" className="size-5 shrink-0 text-gray-900">
                                         <path d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" fill-rule="evenodd" />
                                     </svg>
-                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5 shrink-0 text-gray-900">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" ariaHidden="true" className="size-5 shrink-0 text-gray-900">
                                         <path d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" fill-rule="evenodd" />
                                     </svg>
-                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5 shrink-0 text-gray-900">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" ariaHidden="true" className="size-5 shrink-0 text-gray-900">
                                         <path d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" fill-rule="evenodd" />
                                     </svg>
-                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5 shrink-0 text-gray-200">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" ariaHidden="true" className="size-5 shrink-0 text-gray-200">
                                         <path d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" fill-rule="evenodd" />
                                     </svg>
                                 </div>

@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import css from './LoginPage.module.css';
 import { useNavigate } from 'react-router-dom';
+import { userData } from 'three/tsl';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const API_BASE_URL = "http://localhost:3001/api";
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -14,6 +17,7 @@ const LoginPage = () => {
 
     const [errors, setErrors] = useState({});
     const [message,setMessage] = useState('');
+    const [type, setType] = useState("");
     console.log(message,"message")
     const [isLoading, setIsLoading] = useState(false);
 
@@ -57,23 +61,30 @@ const LoginPage = () => {
         return newErrors;
     }
 
-    const findUser = (email, password) => {
+    const loginAPI = async (userData) => {
         try {
-            const usersData = localStorage.getItem('users');
-
-            if (!usersData) {
-                return null;
+            const response = await fetch(`${API_BASE_URL}/user/login`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData)
+        });
+        
+        const data = await response.json();
+        if(!response.ok){
+            throw new Error(data.message, "Login failed")
+        }
+        return data;
+        } catch (error){
+            if (error.message === "Failed to fetch") {
+                throw new Error('Connot connect to server. Please check if backend is running.')
             }
-
-            const users = JSON.parse(usersData);
-            return users.find (
-                user => user.email === email && user.password === password
-            );
-        } catch (error) {
-            console.error("Error finding user:", error);
-            return null;
+            throw error;
         }
     };
+
+    
 
     const setAuthentication = (user) => {
         try {
@@ -105,20 +116,21 @@ const LoginPage = () => {
         setIsLoading(true);
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 500));
+            const loginData = {
+                email: form.email.trim(),
+                password: form.password
+            };
 
-            const user = findUser(form.email, form.password);
-            
-            if (!user) {
-                setMessage('Invalid email and password');
-                setIsLoading(false);
-                return;
-            } 
-            setAuthentication(user);
+            const response = await loginAPI(loginData);
+            setType("success");
+
+            setAuthentication(response.user);
 
             navigate('/home');
+
         } catch (error) {
             setMessage(error.message || 'Something went wrong. Please try again');
+            setType("error")
             setIsLoading(false);
         }
     };
@@ -131,7 +143,7 @@ const LoginPage = () => {
         <div className={css.loginWrapper}>
             <div className={css.authContainer}>
                 <h2>Login</h2>
-                {message && <div>{message}</div>}
+                {message && <div className={`${css.alert} ${type === "error" ? css.error : css.success}`}>{message}</div>}
                 <form className={css.authForm} onSubmit={handleSubmit}>
                     <input
                         type="email"

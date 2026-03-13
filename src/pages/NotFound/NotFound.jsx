@@ -19,7 +19,7 @@ function NotFound() {
                 Go back home
             </a>
             <a href="#" className="text-sm font-semibold text-white">
-                Contact support <span aria-hidden="true">&rarr;</span>
+                Contact support <span ariaHidden="true">&rarr;</span>
             </a>
             </div>
         </div>
