@@ -31,8 +31,6 @@ const LoginPage = () => {
             [name]:value
         }));
 
-        // if(name === 'password') setStrength(getStrength(value));
-        // setForm({...form, [e.target.name]: e.target.value,});
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -82,37 +80,29 @@ const LoginPage = () => {
             }
             throw error;
         }
+
+        return data; // expects { accessToken, refreshToken, user }
     };
 
-    
-
-    const setAuthentication = (user) => {
-        try {
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('currentUser', JSON.stringify({
-                id: user.id,
-                name: user.name,
-                email: user.email
-            }));
-            return true;
-        } catch (error) {
-            console.error("Error setting authentication", error);
-            throw new Error("Failed to save login session");
-        }
+    const saveSession = ({ accessToken, refreshToken, user }) => {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('currentUser', JSON.stringify(user));
     };
-    
+
     const handleSubmit = async (e) => {
+        //api.get('/users')
         e.preventDefault();
 
         if (isLoading) return;
-        
-        const validationErrors = validateForm()
-        // setErrors(validationErrors);
 
-        if(Object.keys(validationErrors).length> 0){
+        const validationErrors = validateForm();
+
+        if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
+
         setIsLoading(true);
 
         try {
@@ -129,8 +119,11 @@ const LoginPage = () => {
             navigate('/home');
 
         } catch (error) {
-            setMessage(error.message || 'Something went wrong. Please try again');
-            setType("error")
+            if (error.message === 'Failed to fetch') {
+                setMessage('Cannot connect to server. Please try again later.');
+            } else {
+                setMessage(error.message || 'Something went wrong. Please try again.');
+            }
             setIsLoading(false);
         }
     };
@@ -138,7 +131,6 @@ const LoginPage = () => {
     const isFormValid = 
     form.email.trim() !== ''&& form.password.trim() !== '';
 
-    
     return (
         <div className={css.loginWrapper}>
             <div className={css.authContainer}>

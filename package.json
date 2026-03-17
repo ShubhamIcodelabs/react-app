@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite",
-  "server": "json-server --watch db.json --port 3001",
-  "build": "vite build",
-  "lint": "eslint .",
-  "preview": "vite preview"
-},
+    "dev": "vite",
+    "server": "json-server --watch db.json --port 3001",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@react-three/fiber": "^9.3.0",
+    "axios": "^1.13.6",
     "classnames": "^2.5.1",
     "framer-motion": "^11.18.2",
     "react": "^19.1.0",

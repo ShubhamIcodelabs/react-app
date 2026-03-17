@@ -8,18 +8,18 @@ const HomePage = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const isAuthenticated = localStorage.getItem('isAuthenticated');
-        const currentUser = localStorage.getItem('currentUser');
+       // const isAuthenticated = localStorage.getItem('isAuthenticated');
+        const currentUser = localStorage.getItem('users');
         
-        if (!isAuthenticated || isAuthenticated !== 'true') {
-            navigate('/');
-            return;
-        }
+        // if (!isAuthenticated || isAuthenticated !== 'true') {
+        //     navigate('/');
+        //     return;
+        // }
         
         if (currentUser) {
             setUser(JSON.parse(currentUser));
         }
-    }, [navigate]);
+    }, []);
 
     if (!user) {
         return <div className="loader"></div>;
