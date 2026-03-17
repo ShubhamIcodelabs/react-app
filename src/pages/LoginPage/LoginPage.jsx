@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import css from './LoginPage.module.css';
 import { useNavigate } from 'react-router-dom';
-import { userData } from 'three/tsl';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -27,8 +28,8 @@ const LoginPage = () => {
         const { name, value } = e.target;
 
         setForm(prev => ({
-            ...form,
-            [name]:value
+            ...prev,
+            [name]: value
         }));
 
         if (errors[name]) {
@@ -61,33 +62,38 @@ const LoginPage = () => {
 
     const loginAPI = async (userData) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/user/login`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData)
-        });
-        
-        const data = await response.json();
-        if(!response.ok){
-            throw new Error(data.message, "Login failed")
-        }
-        return data;
-        } catch (error){
+            const response = await fetch(`${API_BASE_URL}/user/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+            });
+            
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || "Login failed");
+            }
+            return data;
+        } catch (error) {
             if (error.message === "Failed to fetch") {
-                throw new Error('Connot connect to server. Please check if backend is running.')
+                throw new Error('Cannot connect to server. Please check if backend is running.');
             }
             throw error;
         }
-
-        return data; // expects { accessToken, refreshToken, user }
     };
 
     const saveSession = ({ accessToken, refreshToken, user }) => {
+        console.log('Saving session:', { accessToken: !!accessToken, refreshToken: !!refreshToken, user: !!user });
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('isAuthenticated', 'true');
+        console.log('Session saved, localStorage check:', {
+            accessToken: !!localStorage.getItem('accessToken'),
+            refreshToken: !!localStorage.getItem('refreshToken'),
+            isAuthenticated: localStorage.getItem('isAuthenticated')
+        });
     };
 
     const handleSubmit = async (e) => {
@@ -112,24 +118,102 @@ const LoginPage = () => {
             };
 
             const response = await loginAPI(loginData);
+            console.log('Login API response:', response);
+            
+            // Save session with tokens and user data
+            saveSession(response);
+            
             setType("success");
+            setMessage("Login successful! Redirecting...");
 
-            setAuthentication(response.user);
-
-            navigate('/home');
+            // Small delay to ensure localStorage is updated before navigation
+            setTimeout(() => {
+                console.log('Navigating to /home');
+                navigate('/home', { replace: true });
+            }, 100);
 
         } catch (error) {
+            setType("error");
             if (error.message === 'Failed to fetch') {
                 setMessage('Cannot connect to server. Please try again later.');
             } else {
                 setMessage(error.message || 'Something went wrong. Please try again.');
             }
+        } finally {
             setIsLoading(false);
         }
     };
 
     const isFormValid = 
     form.email.trim() !== ''&& form.password.trim() !== '';
+
+    // Google Login API call
+    const googleLoginAPI = async (googleToken) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/user/google-login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ googleToken })
+            });
+            
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || "Google login failed");
+            }
+            return data;
+        } catch (error) {
+            if (error.message === "Failed to fetch") {
+                throw new Error('Cannot connect to server. Please check if backend is running.');
+            }
+            throw error;
+        }
+    };
+
+    // Handle Google Login Success
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            setIsLoading(true);
+            setMessage('');
+            
+            console.log('Google credential response:', credentialResponse);
+            
+            // Decode the JWT token to get user info
+            const userInfo = jwtDecode(credentialResponse.credential);
+            console.log('Decoded user info:', userInfo);
+
+            // Send the Google token to your backend
+            const response = await googleLoginAPI(credentialResponse.credential);
+            console.log('Google login API response:', response);
+            
+            // Save session with tokens and user data
+            saveSession(response);
+            
+            setType("success");
+            setMessage("Google login successful! Redirecting...");
+
+            // Navigate to home
+            setTimeout(() => {
+                console.log('Navigating to /home after Google login');
+                navigate('/home', { replace: true });
+            }, 100);
+
+        } catch (error) {
+            console.error('Google login error:', error);
+            setType("error");
+            setMessage(error.message || 'Google login failed. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Handle Google Login Error
+    const handleGoogleError = () => {
+        console.log("Google Login Failed");
+        setType("error");
+        setMessage("Google login failed. Please try again.");
+    };
 
     return (
         <div className={css.loginWrapper}>
@@ -162,9 +246,27 @@ const LoginPage = () => {
                         type="submit"
                         disabled={!isFormValid || isLoading}
                     >
-                        Login
+                        {isLoading ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
+                
+                {/* Divider */}
+                <div className={css.divider}>
+                    <span>OR</span>
+                </div>
+                
+                {/* Google Login Button */}
+                <div className={css.googleLoginContainer}>
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={handleGoogleError}
+                        useOneTap={false}
+                        theme="outline"
+                        size="large"
+                        text="signin_with"
+                        shape="rectangular"
+                    />
+                </div>
             </div>
         </div>
     )

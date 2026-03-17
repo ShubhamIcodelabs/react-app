@@ -96,3 +96,41 @@
   background-color: #e6ffed;
   color: #2e7d32;
 }
+
+/* Google Login Styles */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e1e1e1;
+}
+
+.divider span {
+  padding: 0 1rem;
+  color: #666;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.googleLoginContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.googleLoginContainer > div {
+  width: 100% !important;
+}
+
+.googleLoginContainer button {
+  width: 100% !important;
+  justify-content: center !important;
+}

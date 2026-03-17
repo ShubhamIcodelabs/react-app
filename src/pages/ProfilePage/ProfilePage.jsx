@@ -1,39 +1,70 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authFetch } from '../../utils/api';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     bio: ''
   });
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Check authentication
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    if (!isAuthenticated || isAuthenticated !== 'true') {
-      navigate('/login');
-      return;
-    }
+    const loadUserProfile = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+          navigate('/login');
+          return;
+        }
 
-    // Load user data
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      const userData = JSON.parse(currentUser);
-      setUser(userData);
-      setFormData({
-        name: userData.name || '',
-        email: userData.email || '',
-        phone: userData.phone || '',
-        bio: userData.bio || ''
-      });
-    }
+        // Try to get fresh user data from backend
+        const response = await authFetch('/user/profile');
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData.user);
+          setFormData({
+            name: userData.user.name || '',
+            email: userData.user.email || '',
+            phone: userData.user.phone || '',
+            bio: userData.user.bio || ''
+          });
+        } else {
+          // Fallback to localStorage if API fails
+          const currentUser = localStorage.getItem('currentUser');
+          if (currentUser) {
+            const userData = JSON.parse(currentUser);
+            setUser(userData);
+            setFormData({
+              name: userData.name || '',
+              email: userData.email || '',
+              phone: userData.phone || '',
+              bio: userData.bio || ''
+            });
+          } else {
+            navigate('/login');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+        navigate('/login');
+      }
+    };
+
+    loadUserProfile();
   }, [navigate]);
 
   const handleChange = (e) => {
@@ -44,37 +75,86 @@ const ProfilePage = () => {
     }));
   };
 
-  const handleSave = () => {
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSave = async () => {
+    setIsLoading(true);
     try {
-      // Update user data
-      const updatedUser = {
-        ...user,
-        ...formData
-      };
+      const response = await authFetch('/user/profile', {
+        method: 'PUT',
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          bio: formData.bio
+        })
+      });
 
-      // Save to localStorage
-      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-      
-      // Update users array if exists
-      const usersData = localStorage.getItem('users');
-      if (usersData) {
-        const users = JSON.parse(usersData);
-        const userIndex = users.findIndex(u => u.email === user.email);
-        if (userIndex !== -1) {
-          users[userIndex] = { ...users[userIndex], ...formData };
-          localStorage.setItem('users', JSON.stringify(users));
-        }
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUser(updatedUser.user);
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser.user));
+        setIsEditing(false);
+        setMessage('Profile updated successfully!');
+        setMessageType('success');
+      } else {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to update profile');
       }
-
-      setUser(updatedUser);
-      setIsEditing(false);
-      setMessage('Profile updated successfully!');
-      setMessageType('success');
-      
-      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
-      setMessage('Failed to update profile. Please try again.');
+      setMessage(error.message || 'Failed to update profile. Please try again.');
       setMessageType('error');
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setMessage('New passwords do not match');
+      setMessageType('error');
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setMessage('New password must be at least 6 characters');
+      setMessageType('error');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await authFetch('/user/change-password', {
+        method: 'PUT',
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword
+        })
+      });
+
+      if (response.ok) {
+        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        setShowPasswordChange(false);
+        setMessage('Password changed successfully!');
+        setMessageType('success');
+      } else {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to change password');
+      }
+    } catch (error) {
+      setMessage(error.message || 'Failed to change password. Please try again.');
+      setMessageType('error');
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => setMessage(''), 3000);
     }
   };
 
@@ -134,8 +214,16 @@ const ProfilePage = () => {
         )}
 
         {/* Profile Information */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Profile Information</h2>
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-gray-900">Profile Information</h2>
+            <button
+              onClick={() => setShowPasswordChange(!showPasswordChange)}
+              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+            >
+              Change Password
+            </button>
+          </div>
           
           <div className="space-y-6">
             {/* Name */}
@@ -212,12 +300,14 @@ const ProfilePage = () => {
             <div className="flex space-x-4 mt-6">
               <button
                 onClick={handleSave}
-                className="cursor-pointer flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition font-medium"
+                disabled={isLoading}
+                className="cursor-pointer flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition font-medium disabled:opacity-50"
               >
-                Save Changes
+                {isLoading ? 'Saving...' : 'Save Changes'}
               </button>
               <button
                 onClick={handleCancel}
+                disabled={isLoading}
                 className="cursor-pointer flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition font-medium"
               >
                 Cancel
@@ -225,6 +315,74 @@ const ProfilePage = () => {
             </div>
           )}
         </div>
+
+        {/* Password Change Section */}
+        {showPasswordChange && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Change Password</h3>
+            <form onSubmit={handlePasswordSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Current Password
+                </label>
+                <input
+                  type="password"
+                  name="currentPassword"
+                  value={passwordData.currentPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  New Password (minimum 6 characters)
+                </label>
+                <input
+                  type="password"
+                  name="newPassword"
+                  value={passwordData.newPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  minLength="6"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={passwordData.confirmPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+              <div className="flex space-x-4">
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
+                >
+                  {isLoading ? 'Changing...' : 'Change Password'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPasswordChange(false);
+                    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                  }}
+                  className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {/* Account Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">

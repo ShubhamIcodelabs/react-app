@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import IconCard from '../IconCard/IconCard';
+import { getCurrentUser, clearAuthData } from '../../utils/auth';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -9,10 +10,8 @@ const Header = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      setUser(JSON.parse(currentUser));
-    }
+    const user = getCurrentUser();
+    setUser(user);
   }, []);
 
   useEffect(() => {
@@ -28,10 +27,30 @@ const Header = () => {
     };
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('currentUser');
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      
+      if (refreshToken) {
+        // Call backend logout endpoint
+        await fetch('http://localhost:3001/api/user/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          },
+          body: JSON.stringify({ refreshToken })
+        });
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Continue with local logout even if backend call fails
+    } finally {
+      // Clear all authentication data
+      clearAuthData();
+      setUser(null);
+      navigate('/');
+    }
   };
 
   return (

@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage/LoginPage.jsx';
 import SignupPage from './pages/SignupPage/SignupPage.jsx';
 import SearchPage from './pages/SearchPage/SearchPage.jsx';
 import Layout from './components/Layout/Layout.jsx';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FavouritePage from './pages/FavouritePage/FavouritePage.jsx';
 import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
@@ -22,8 +23,8 @@ function App() {
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/login' element={<LoginPage />} />
         
-        {/* Routes with header (wrapped in Layout) */}
-        <Route element={<Layout />}>
+        {/* Routes with header (wrapped in Layout and ProtectedRoute) */}
+        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path='/home' element={<HomePage />} />
           <Route path='/search' element={<SearchPage />} />
           <Route path='/about' element={<AboutPage />} />
