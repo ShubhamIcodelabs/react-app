@@ -118,7 +118,7 @@ const Header = () => {
                 <img
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
                   alt="profile"
-                  className="h-8 w-8 rounded-full"
+                  className="h-8 w-8 rounded-full object-cover"
                 />
 
               </button>
@@ -143,6 +143,13 @@ const Header = () => {
                     className="block w-full text-left px-4 py-2 text-sm hover:bg-[#ffffff1a] cursor-pointer"
                   >
                     Settings
+                  </button>
+
+                  <button
+                    onClick={() => navigate('/users')}
+                    className="block w-full text-left px-4 py-2 text-sm hover:bg-[#ffffff1a] cursor-pointer"
+                  >
+                    All Users
                   </button>
 
                   <button

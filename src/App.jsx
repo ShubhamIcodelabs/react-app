@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
 import CartPage from './pages/CartPage/CartPage.jsx';
 import ContactPage from './pages/ContactPage/ContactPage.jsx';
 import NotFound from './pages/NotFound/NotFound.jsx';
+import Users from './pages/Users/Users.jsx';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/not-found" element={<NotFound />} />
+          <Route path="/users" element={<Users />} />
         </Route>
       </Routes>
    </BrowserRouter>
