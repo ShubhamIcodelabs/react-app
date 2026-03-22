@@ -81,6 +81,8 @@ const LoginPage = () => {
             }
             throw error;
         }
+
+        return data; // expects { accessToken, refreshToken, user }
     };
 
     const saveSession = ({ accessToken, refreshToken, user }) => {
